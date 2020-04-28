@@ -29,13 +29,14 @@ namespace Channel
 		// Passed by argument.
 		Listener* listener{ nullptr };
 		// Others.
-		size_t msgStart{ 0 }; // Where the latest message starts.
+		size_t msgStart{ 0u }; // Where the latest message starts.
 	};
 
 	class ProducerSocket : public ::UnixStreamSocket
 	{
 	public:
 		ProducerSocket(int fd, size_t bufferSize);
+
 		/* Pure virtual methods inherited from ::UnixStreamSocket. */
 	public:
 		void UserOnUnixStreamRead() override
@@ -65,6 +66,9 @@ namespace Channel
 		void Send(json& jsonMessage);
 		void SendLog(char* nsPayload, size_t nsPayloadLen);
 		void SendBinary(const uint8_t* nsPayload, size_t nsPayloadLen);
+
+	private:
+		void SendImpl(const void* nsPayload, size_t nsPayloadLen);
 
 		/* Pure virtual methods inherited from ConsumerSocket::Listener. */
 	public:
